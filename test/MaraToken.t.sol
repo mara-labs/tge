@@ -38,10 +38,10 @@ contract MaraTokenTest is Test, Context {
         token.mint(address(this), amount);
 
         // Check new total supply
-        assertEq(token.totalSupply(), 2*amount);
+        assertEq(token.totalSupply(), 2 * amount);
 
         // Check recipient balance
-        assertEq(token.balanceOf(address(this)), 2*amount);
+        assertEq(token.balanceOf(address(this)), 2 * amount);
     }
 
     function testBurn() public {
