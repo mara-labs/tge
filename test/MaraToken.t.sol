@@ -7,13 +7,13 @@ import "forge-std/console2.sol";
 
 contract MaraTokenTest is Test, Context {
     MaraToken public token;
-    uint amount = 1000 * 10 ** 18;
+    uint newSupply = 1000 * 10 ** 18;
 
     function setUp() public {
         token = new MaraToken();
 
         // Mint tokens
-        token.mint(address(this), amount);
+        token.mint(address(this), newSupply);
     }
 
     function testName() public {
@@ -22,10 +22,10 @@ contract MaraTokenTest is Test, Context {
 
     function testInitialState() public {
         // Check initial supply is amount minted in setUp()
-        assertEq(token.totalSupply(), amount);
+        assertEq(token.totalSupply(), newSupply);
 
         // Check initial balances
-        assertEq(token.balanceOf(address(this)), amount);
+        assertEq(token.balanceOf(address(this)), newSupply);
 
         // Check initial roles
         assertTrue(token.hasRole(token.DEFAULT_ADMIN_ROLE(), address(this)));
@@ -35,24 +35,24 @@ contract MaraTokenTest is Test, Context {
 
     function testMint() public {
         // Mint same amount of tokens again
-        token.mint(address(this), amount);
+        token.mint(address(this), newSupply);
 
         // Check new total supply
-        assertEq(token.totalSupply(), 2 * amount);
+        assertEq(token.totalSupply(), 2 * newSupply);
 
         // Check recipient balance
-        assertEq(token.balanceOf(address(this)), 2 * amount);
+        assertEq(token.balanceOf(address(this)), 2 * newSupply);
     }
 
     function testBurn() public {
         // Burn tokens
-        token.burn(amount / 2);
+        token.burn(newSupply / 2);
 
         // Check new total supply
-        assertEq(token.totalSupply(), amount / 2);
+        assertEq(token.totalSupply(), newSupply / 2);
 
         // Check new balance
-        assertEq(token.balanceOf(address(this)), amount / 2);
+        assertEq(token.balanceOf(address(this)), newSupply / 2);
     }
 
     function testPause() public {
