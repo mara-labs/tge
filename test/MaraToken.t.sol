@@ -5,7 +5,9 @@ import "forge-std/Test.sol";
 import "../src/MaraToken.sol";
 import "forge-std/console2.sol";
 
-contract MaraTokenTest is Test, Context {
+contract MaraTokenTest is Test {
+    uint public constant DEFAULT_ADMIN_ROLE = 0x00;
+
     MaraToken public token;
     uint newSupply = 1000 * 10 ** 18;
 
@@ -74,4 +76,15 @@ contract MaraTokenTest is Test, Context {
         token.transfer(address(1), 100);
     }
 
-}
+    function testRoles() public {
+        assertTrue(token.hasRole(token.DEFAULT_ADMIN_ROLE(), address(this)));
+        assertFalse(token.hasRole(token.DEFAULT_ADMIN_ROLE(), msg.sender));
+
+        // Default admin can grant roles
+        token.grantRole(token.MINTER_ROLE(), address(1));
+        assertTrue(token.hasRole(token.MINTER_ROLE(), address(1)));
+        assertFalse(token.hasRole(token.MINTER_ROLE(), address(2)));
+
+        // Only minter can mint
+        token.mint(address(1), 100);
+    }
