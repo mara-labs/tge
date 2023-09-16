@@ -88,3 +88,18 @@ contract MaraTokenTest is Test {
         // Only minter can mint
         token.mint(address(1), 100);
     }
+
+    function testFail_Addr0RoleAssignerNotAdmin() public {
+        // Only owner can grant roles
+        vm.startPrank(address(0));
+        token.grantRole(token.MINTER_ROLE(), address(1));
+        vm.stopPrank();
+    }
+
+    function testFail_Addr1RoleAssignerNotAdmin() public {
+        // Only owner can grant roles
+        vm.startPrank(address(1));
+        token.grantRole(token.MINTER_ROLE(), address(2));
+        vm.stopPrank();
+    }
+}
